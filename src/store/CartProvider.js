@@ -5,19 +5,24 @@ import React,{ useState } from "react";
 
 const CartProvider = (props) =>{
     const addItemHandler = (items)=>{
+        // console.log(items);
         setCartState((prevState) =>{
+            // console.log(prevState);
             let arrayData= [...prevState];
             
             const isIdFound = (element) =>{
                 return(element.id === items.id);
             }
             const indexData= arrayData.findIndex(isIdFound);
-            if(indexData !== -1){
-                arrayData[indexData].numItems = items.numItems;
+            if(items.numItems <= 5){
+                if(indexData !== -1){
+                    arrayData[indexData].numItems = items.numItems;
+                }
+                else{
+                    arrayData = prevState.concat(items);
+                }
             }
-            else{
-                arrayData = prevState.concat(items);
-            }
+            
             props.cartItem(arrayData);
             return arrayData;
         });
